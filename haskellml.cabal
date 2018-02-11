@@ -1,6 +1,8 @@
--- This file has been generated from package.yaml by hpack version 0.18.1.
+-- This file has been generated from package.yaml by hpack version 0.21.2.
 --
 -- see: https://github.com/sol/hpack
+--
+-- hash: b71717be43896e5090787f6ea8505b36d20f17fb4f5810eb748f20956e64d22f
 
 name:           haskellml
 version:        0.1.0.0
@@ -27,7 +29,7 @@ library
   hs-source-dirs:
       src
   build-depends:
-      base >= 4.7 && < 5
+      base >=4.7 && <5
     , containers
     , statistics
     , vector
@@ -40,27 +42,31 @@ library
 
 executable haskellml-exe
   main-is: Main.hs
+  other-modules:
+      Paths_haskellml
   hs-source-dirs:
       app
   ghc-options: -threaded -rtsopts -with-rtsopts=-N
   build-depends:
-      base >= 4.7 && < 5
+      base >=4.7 && <5
     , containers
+    , haskellml
     , statistics
     , vector
-    , haskellml
   default-language: Haskell2010
 
 test-suite haskellml-test
   type: exitcode-stdio-1.0
   main-is: Spec.hs
+  other-modules:
+      Paths_haskellml
   hs-source-dirs:
       test
   ghc-options: -threaded -rtsopts -with-rtsopts=-N
   build-depends:
-      base >= 4.7 && < 5
+      base >=4.7 && <5
     , containers
+    , haskellml
     , statistics
     , vector
-    , haskellml
   default-language: Haskell2010
