@@ -4,7 +4,6 @@ module NaiveBayes.GaussianNB
   , predict
   , GaussianNB(..)
   ) where
-
 import qualified Data.Map as M
 import Data.Map ((!))
 import qualified Data.Vector.Unboxed as U
@@ -46,8 +45,7 @@ data GaussianNB = GaussianNB {
   deriving (Show)
 
 labelsCounts :: U.Vector Int -> M.Map Int Int
-labelsCounts labels =
-  U.foldr' (\x acc -> M.insertWith (+) x 1 acc) M.empty labels
+labelsCounts = U.foldr' (\x acc -> M.insertWith (+) x 1 acc) M.empty
 
 labelsFeatures :: S.Matrix -> U.Vector Int -> M.Map Int [U.Vector Double]
 labelsFeatures features labels =
@@ -60,22 +58,22 @@ zip' :: U.Vector Int -> S.Matrix -> [(Int, U.Vector Double)]
 zip' vec mx = U.ifoldr' (\i x acc -> (x, S.row mx i):acc) [] vec
 
 means :: M.Map Int [U.Vector Double] -> M.Map Int [Double]
-means mp = fmap ((fmap S.mean) . S.toRows . S.transpose . S.fromRows) mp
+means = fmap (fmap S.mean . S.toRows . S.transpose . S.fromRows)
 
 variances :: M.Map Int [U.Vector Double] -> M.Map Int [Double]
-variances mp =
-  fmap ((fmap S.variance) . S.toRows . S.transpose . S.fromRows) mp
+variances =
+  fmap (fmap S.variance . S.toRows . S.transpose . S.fromRows)
 
 priorProbs :: M.Map Int Int -> Int -> M.Map Int Double
 priorProbs mp totalCount =
-  fmap (\x -> (fromIntegral x) / (fromIntegral totalCount)) mp
+  fmap (\x -> fromIntegral x / fromIntegral totalCount) mp
 
 train :: Matrix -> U.Vector Int -> GaussianNB
 train features labels =
   let countMap = labelsCounts labels
       featuresMap = labelsFeatures features labels
       meansMap = means featuresMap
-      variancesMap = means featuresMap
+      variancesMap = variances featuresMap
       priorProbsMap = priorProbs countMap (U.length labels)
   in  GaussianNB meansMap variancesMap priorProbsMap
 
@@ -87,10 +85,9 @@ predict cf feature =
 
 posteriorProbs :: GaussianNB -> [Double] -> M.Map Int Double
 posteriorProbs (GaussianNB ms vs pp) feature =
-  M.mapWithKey (\k x -> x * (likelihoods k)) pp
+  M.mapWithKey (\k x -> x * likelihoods k) pp
     where likelihoods k = L.product $
             L.map
-              (\(x, m, v) -> (exp ((- ((x - m) ** 2)) / (2 * v))) / (sqrt (2 * pi * v)))
+              (\(x, m, v) -> exp ((- ((x - m) ** 2)) / (2 * v)) / (sqrt (2 * pi * v)))
               (L.zip3 feature (ms ! k) (vs ! k))
-
 
