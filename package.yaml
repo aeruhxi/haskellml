@@ -24,6 +24,7 @@ dependencies:
 - containers
 - statistics
 - vector
+- hmatrix
 
 library:
   source-dirs: src

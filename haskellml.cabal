@@ -2,7 +2,7 @@
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: b71717be43896e5090787f6ea8505b36d20f17fb4f5810eb748f20956e64d22f
+-- hash: fab1f58f8ccc4b90d8075ab951ee2ebeccb31e246c42561f66fedda51600f302
 
 name:           haskellml
 version:        0.1.0.0
@@ -31,11 +31,13 @@ library
   build-depends:
       base >=4.7 && <5
     , containers
+    , hmatrix
     , statistics
     , vector
   exposed-modules:
       Lib
       NaiveBayes.GaussianNB
+      NeuralNetwork
   other-modules:
       Paths_haskellml
   default-language: Haskell2010
@@ -51,6 +53,7 @@ executable haskellml-exe
       base >=4.7 && <5
     , containers
     , haskellml
+    , hmatrix
     , statistics
     , vector
   default-language: Haskell2010
@@ -67,6 +70,7 @@ test-suite haskellml-test
       base >=4.7 && <5
     , containers
     , haskellml
+    , hmatrix
     , statistics
     , vector
   default-language: Haskell2010
