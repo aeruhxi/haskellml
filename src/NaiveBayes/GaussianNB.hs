@@ -1,17 +1,16 @@
 module NaiveBayes.GaussianNB
-  (
-    train
+  ( train
   , predict
   , GaussianNB(..)
   ) where
-import qualified Data.Map as M
-import Data.Map ((!))
+import           Data.List           ((++))
+import qualified Data.List           as L
+import           Data.Map            ((!))
+import qualified Data.Map            as M
 import qualified Data.Vector.Unboxed as U
-import qualified Data.List as L
-import Data.List ((++))
-import Prelude hiding ((++))
-import Statistics.Sample as S
-import Statistics.Matrix as S
+import           Prelude             hiding ((++))
+import           Statistics.Matrix   as S
+import           Statistics.Sample   as S
 
 -- Implementation taken from
 -- https://chrisalbon.com/machine_learning/naive_bayes/naive_bayes_classifier_from_scratch/
@@ -37,11 +36,13 @@ import Statistics.Matrix as S
 -- predict trainedData [6.00, 130, 8]
 -- 1
 
-data GaussianNB = GaussianNB {
-    cMeans :: M.Map Int [Double]
-  , cVariances :: M.Map Int [Double]
+data GaussianNB = GaussianNB
+  { cMeans      :: M.Map Int [Double]
+  , cVariances  :: M.Map Int [Double]
   , cPriorProbs :: M.Map Int Double
   }
+
+
   deriving (Show)
 
 labelsCounts :: U.Vector Int -> M.Map Int Int
